@@ -113,12 +113,12 @@ balanced_data = pd.DataFrame({
 st.markdown("### Original vs Balanced Values")
 st.dataframe(balanced_data,use_container_width=True)
 
+if name and min(values)>0 :
+    pdf_data = generate_pdf(balanced_data, fig, fig2,name)
 
-pdf_data = generate_pdf(balanced_data, fig, fig2,name)
-
-st.download_button(
-    label="📄 Download PDF Report",
-    data=pdf_data,
-    file_name=f"{name}-report.pdf",
-    mime="application/pdf"
-)
+    st.download_button(
+        label="📄 Download PDF Report",
+        data=pdf_data,
+        file_name=f"{name}-report.pdf",
+        mime="application/pdf"
+    )
