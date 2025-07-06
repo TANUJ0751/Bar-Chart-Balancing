@@ -4,7 +4,7 @@ import tempfile
 import os
 
 
-def generate_pdf(df, fig1, fig2):
+def generate_pdf(df, fig1, fig2,name):
     # Create a temp directory
     with tempfile.TemporaryDirectory() as tmpdir:
         # Save charts as images
@@ -43,7 +43,7 @@ def generate_pdf(df, fig1, fig2):
         pdf.image(fig2_path, w=180)
 
         # Save PDF to a buffer
-        pdf_path = os.path.join(tmpdir, "report.pdf")
+        pdf_path = os.path.join(tmpdir, f"{name}-report.pdf")
         pdf.output(pdf_path)
 
         with open(pdf_path, "rb") as f:

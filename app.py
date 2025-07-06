@@ -112,20 +112,9 @@ balanced_data = pd.DataFrame({
 
 st.markdown("### Original vs Balanced Values")
 st.dataframe(balanced_data,use_container_width=True)
-import io
-
-# Convert DataFrame to CSV
-csv = balanced_data.to_csv(index=False)
 
 
-# Provide download button
-st.download_button(
-    label="📥 Download Balanced Data as CSV",
-    data=csv,
-    file_name=f'{name}-balanced_data.csv',
-    mime='text/csv'
-)
-pdf_data = generate_pdf(balanced_data, fig, fig2)
+pdf_data = generate_pdf(balanced_data, fig, fig2,name)
 
 st.download_button(
     label="📄 Download PDF Report",
