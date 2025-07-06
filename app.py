@@ -4,6 +4,11 @@ import plotly.graph_objects as go
 from balance import balance_values
 from pdf import generate_pdf
 import pandas as pd
+st.set_page_config(
+    page_title="Bar Chart Balancer",
+    page_icon="🧭",  # Emoji or path to image file
+    layout="wide"
+)
 
 st.title("Bar Graph Balancing")
 import io
