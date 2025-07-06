@@ -1,7 +1,10 @@
 import streamlit as st
 import plotly.express as px
 import plotly.graph_objects as go
+from balance import balance_values
+from pdf import generate_pdf
 import pandas as pd
+
 st.title("Bar Graph Balancing")
 import io
 name = st.text_input("Enter Project Name",key="project_name_input")
@@ -11,7 +14,7 @@ labels = ["NNW","NORTH","NNE","NE","ENE","EAST","ESE","SE","SSE","SOUTH","SSW","
 colors = [
     "#2986FF", '#2986FF', '#2986FF', '#2986FF', "#24FF53",
     '#24FF53', '#24FF53', "#FF3232", '#FF3232', '#FF3232',
-    "#fbff1f", '#fbff1f', '#ffffff', "#ffffff", '#ffffff', '#ffffff'
+    "#fbff1f", '#fbff1f', "#b4b4b4", "#b4b4b4", '#b4b4b4', '#b4b4b4'
 ]
 cols = st.columns(4)
 # Take 16 numeric inputs
@@ -59,38 +62,6 @@ st.plotly_chart(fig)
 
 
 
-def balance_values(values, step, mode, max_iterations=100):
-    """
-    Recursively balance values between dynamic min and max line using given mode.
-    Modes: 'add', 'subtract', 'both'
-    """
-    values = values[:]  # clone input list
-
-    for _ in range(max_iterations):
-        avg = sum(values) / len(values)
-        max_line = (max(values) + avg) / 2
-        min_line = (min(values) + avg) / 2
-
-        updated = False
-        for i, val in enumerate(values):
-            if mode == 'add' and val < avg:
-                values[i] = min(val + step, max_line)
-                updated = True
-            elif mode == 'subtract' and val > avg:
-                values[i] = max(val - step, min_line)
-                updated = True
-            elif mode == 'both':
-                if val < avg:
-                    values[i] = min(val + step, max_line)
-                    updated = True
-                elif val > avg:
-                    values[i] = max(val - step, min_line)
-                    updated = True
-
-        if not updated:
-            break
-
-    return [round(v, 2) for v in values]
 
 st.subheader("Balancing Zones")
 
@@ -101,6 +72,11 @@ step = st.sidebar.slider("Add/Subtract Step Size", 0.01, diff, 0.10, step=0.01)
 # Balance values
 balanced_values = balance_values(values,step,mode)
 
+AVG_AREA=sum(balanced_values)/16
+MAX_LINE=(max(balanced_values)+AVG_AREA)/2
+MIN_LINE=(min(balanced_values)+AVG_AREA)/2
+
+st.write(f"Max Line : {MAX_LINE} , Min Line : {MIN_LINE} , AVG Line : {AVG_AREA}")
 
 # Plot balanced values
 fig2 = go.Figure()
@@ -148,4 +124,12 @@ st.download_button(
     data=csv,
     file_name=f'{name}-balanced_data.csv',
     mime='text/csv'
+)
+pdf_data = generate_pdf(balanced_data, fig, fig2)
+
+st.download_button(
+    label="📄 Download PDF Report",
+    data=pdf_data,
+    file_name=f"{name}-report.pdf",
+    mime="application/pdf"
 )
