@@ -88,6 +88,7 @@ fig.update_layout(
     xaxis_title='Zones',
     yaxis_title='Area',
     bargap=0.5,
+    dragmode=False,
     height=600
 )
 
@@ -135,7 +136,8 @@ fig2.update_layout(
     title="Balanced Directional Areas",
     xaxis_title="Direction",
     yaxis_title="Balanced Area (Sq.ft.)",
-    height=500
+    height=500,
+    dragmode=False
 )
 
 st.plotly_chart(fig2, use_container_width=True)
