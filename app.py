@@ -9,7 +9,23 @@ st.set_page_config(
     page_icon="🧭",  # Emoji or path to image file
     layout="wide"
 )
+st.markdown("""
+    <style>
+    /* Hide spinners in number input */
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+    }
 
+    input[type=number] {
+        -moz-appearance: textfield; /* Firefox */
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+number = st.number_input("Enter a number (no spinners)", step=1, format="%d")
+st.write(f"You entered: {number}")
 st.title("Bar Graph Balancing")
 import io
 name = st.text_input("Enter Project Name",key="project_name_input")
@@ -46,7 +62,7 @@ fig = go.Figure()
 fig.add_trace(go.Bar(x=data['Label'], y=data['Value'],marker_color=colors, name='Input Values'))
 
 # Add horizontal lines
-fig.add_hline(y=AVG_AREA, line_dash="dash", line_color="blue", annotation_text="Avg Area", annotation_position="top left")
+fig.add_hline(y=AVG_AREA, line_dash="dash", line_color="blue", annotation_text="Avg Area", annotation_position="top right")
 fig.add_hline(y=MAX_LINE, line_dash="dot", line_color="green", annotation_text="Max Line", annotation_position="top left")
 fig.add_hline(y=MIN_LINE, line_dash="dot", line_color="red", annotation_text="Min Line", annotation_position="bottom left")
 
@@ -59,7 +75,8 @@ fig.update_layout(
     height=600
 )
 
-st.write(f"Max Line : {MAX_LINE} , Min Line : {MIN_LINE} , AVG Line : {AVG_AREA}")
+total_original=f"Max Line : {MAX_LINE} , Min Line : {MIN_LINE} , AVG Line : {AVG_AREA}"
+st.write(total_original)
 
 
 # Show chart
@@ -80,8 +97,8 @@ balanced_values = balance_values(values,step,mode)
 AVG_AREA=sum(balanced_values)/16
 MAX_LINE=(max(balanced_values)+AVG_AREA)/2
 MIN_LINE=(min(balanced_values)+AVG_AREA)/2
-
-st.write(f"Max Line : {MAX_LINE} , Min Line : {MIN_LINE} , AVG Line : {AVG_AREA}")
+total_balance=f"Max Line : {MAX_LINE} , Min Line : {MIN_LINE} , AVG Line : {AVG_AREA}"
+st.write(total_balance)
 
 # Plot balanced values
 fig2 = go.Figure()
@@ -119,7 +136,7 @@ st.markdown("### Original vs Balanced Values")
 st.dataframe(balanced_data,use_container_width=True)
 
 if name and min(values)>0 :
-    pdf_data = generate_pdf(balanced_data, fig, fig2,name)
+    pdf_data = generate_pdf(balanced_data, fig, fig2,name,total_original,total_balance)
 
     st.download_button(
         label="📄 Download PDF Report",

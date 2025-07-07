@@ -4,7 +4,7 @@ import tempfile
 import os
 
 
-def generate_pdf(df, fig1, fig2, filename):
+def generate_pdf(df, fig1, fig2, filename, total_original, total_balanced):
     # Create a temp directory
     with tempfile.TemporaryDirectory() as tmpdir:
         # Save charts as images
@@ -22,9 +22,11 @@ def generate_pdf(df, fig1, fig2, filename):
         pdf.set_auto_page_break(auto=True, margin=15)
         pdf.add_page()
 
+        # Title
         pdf.set_font("Arial", "B", 16)
         pdf.cell(0, 10, "Bar Chart Balancing Report", ln=True, align="C")
 
+        # Data Table
         pdf.set_font("Arial", "", 12)
         pdf.ln(10)
         pdf.cell(0, 10, "Original vs Balanced Values:", ln=True)
@@ -33,6 +35,7 @@ def generate_pdf(df, fig1, fig2, filename):
         for line in df_text.split('\n'):
             pdf.multi_cell(0, 5, line)
 
+        # Charts
         pdf.add_page()
         pdf.set_font("Arial", "B", 12)
         pdf.cell(0, 10, "Original Input Bar Chart", ln=True)
@@ -41,6 +44,15 @@ def generate_pdf(df, fig1, fig2, filename):
         pdf.ln(10)
         pdf.cell(0, 10, "Balanced Bar Chart", ln=True)
         pdf.image(fig2_path, w=180)
+
+        # ➕ Add Variable Values Here
+        pdf.ln(10)
+        pdf.set_font("Arial", "B", 12)
+        pdf.cell(0, 10, "Summary Metrics:", ln=True)
+
+        pdf.set_font("Arial", "", 12)
+        pdf.cell(0, 10, f"Total Original Value: {total_original}", ln=True)
+        pdf.cell(0, 10, f"Total Balanced Value: {total_balanced}", ln=True)
 
         # Save PDF to a buffer
         pdf_path = os.path.join(tmpdir, f"{filename}-report.pdf")
