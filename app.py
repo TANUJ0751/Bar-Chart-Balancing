@@ -4,28 +4,44 @@ import plotly.graph_objects as go
 from balance import balance_values
 from pdf import generate_pdf
 import pandas as pd
+
+# Hardcoded credentials (in production, use hashed passwords + database)
+USER_CREDENTIALS = {
+    "tanuj": "password123",
+    "admin": "adminpass"
+}
+
+if "authenticated" not in st.session_state:
+    st.session_state.authenticated = False
+
+def login():
+    st.title("🔐 Login Page")
+
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+
+    if st.button("Login"):
+        if username in USER_CREDENTIALS and USER_CREDENTIALS[username] == password:
+            st.session_state.authenticated = True
+            st.success("Login successful! 🎉")
+            st.rerun()  # ✅ use this instead of st.experimental_rerun()
+        else:
+            st.error("Invalid username or password ❌")
+
+
+# Show login page if not authenticated
+
+if not st.session_state.authenticated:
+    login()
+    st.stop()
+
+
 st.set_page_config(
     page_title="Bar Chart Balancer",
     page_icon="🧭",  # Emoji or path to image file
     layout="wide"
 )
-st.markdown("""
-    <style>
-    /* Hide spinners in number input */
-    input[type=number]::-webkit-inner-spin-button, 
-    input[type=number]::-webkit-outer-spin-button { 
-        -webkit-appearance: none; 
-        margin: 0; 
-    }
 
-    input[type=number] {
-        -moz-appearance: textfield; /* Firefox */
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-number = st.number_input("Enter a number (no spinners)", step=1, format="%d")
-st.write(f"You entered: {number}")
 st.title("Bar Graph Balancing")
 import io
 name = st.text_input("Enter Project Name",key="project_name_input")
@@ -134,9 +150,9 @@ balanced_data = pd.DataFrame({
 
 st.markdown("### Original vs Balanced Values")
 st.dataframe(balanced_data,use_container_width=True)
-
+function_detail=f"Function Mode : {mode} , Step Size : {step}"
 if name and min(values)>0 :
-    pdf_data = generate_pdf(balanced_data, fig, fig2,name,total_original,total_balance)
+    pdf_data = generate_pdf(balanced_data, fig, fig2,name,total_original,total_balance,function_detail)
 
     st.download_button(
         label="📄 Download PDF Report",
