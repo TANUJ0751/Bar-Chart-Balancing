@@ -43,7 +43,11 @@ st.set_page_config(
 )
 
 st.title("Bar Graph Balancing")
+st.write("#### Specially for Acharya Pankit Sir")
+st.write("This app is made by - **Tanuj Jain**, this app is used in vastu for balancing each and every zone in the resedential/commercial premises")
 import io
+st.write("------")
+st.write("Enter Project Name for Exporting/Downloading full report")
 name = st.text_input("Enter Project Name",key="project_name_input")
 # Input labels
 labels = ["NNW","NORTH","NNE","NE","ENE","EAST","ESE","SE","SSE","SOUTH","SSW","SW","WSW","WEST","WNW","NW"]
@@ -65,7 +69,7 @@ for col_index in range(4):
             idx = i + col_index * rows_per_col
             if idx < len(labels):
                 label = labels[idx]
-                val = st.number_input(f"{label}", min_value=0.0, value=0.0, step=0.1, key=label)
+                val = st.number_input(f"{label} zone area", min_value=0.0, value=0.0, step=0.1, key=label)
                 values.append(val)
 
 AVG_AREA=sum(values)/16
@@ -98,7 +102,7 @@ fig.update_layout(
     height=600
 )
 
-total_original=f"Max Line : {MAX_LINE} , Min Line : {MIN_LINE} , AVG Line : {AVG_AREA}"
+total_original=f"Max Line : {MAX_LINE} , Min Line : {MIN_LINE} , AVG Line : {AVG_AREA}, Total Area : {sum(values)}"
 st.write(total_original)
 
 
@@ -112,7 +116,7 @@ st.subheader("Balancing Zones")
 
 mode = st.sidebar.radio("Balancing Mode", ["Add", "Subtract", "Both"], horizontal=True).lower()
 diff=(max(values)-min(values))/32
-step = st.sidebar.slider("Add/Subtract Step Size", 0.01, diff, 0.10, step=0.01)
+step = st.sidebar.slider("Threshold Value", 0.01, diff, 0.10, step=0.01)
 
 # Balance values
 balanced_values = balance_values(values,step,mode)
@@ -120,7 +124,7 @@ balanced_values = balance_values(values,step,mode)
 AVG_AREA=sum(balanced_values)/16
 MAX_LINE=(max(balanced_values)+AVG_AREA)/2
 MIN_LINE=(min(balanced_values)+AVG_AREA)/2
-total_balance=f"Max Line : {MAX_LINE} , Min Line : {MIN_LINE} , AVG Line : {AVG_AREA}"
+total_balance=f"Max Line : {MAX_LINE} , Min Line : {MIN_LINE} , AVG Line : {AVG_AREA},Total Area : {sum(values)}"
 st.write(total_balance)
 
 # Plot balanced values
