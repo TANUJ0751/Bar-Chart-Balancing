@@ -56,11 +56,17 @@ colors = [
 cols = st.columns(4)
 # Take 16 numeric inputs
 values = []
-for i, label in enumerate(labels):
-    col = cols[i % 4]
-    with col:
-        val = st.number_input(f"{label}", min_value=0.0, value=0.0,step=0.1, key=label)
-        values.append(val)
+
+# Divide the labels into chunks for each column
+rows_per_col = (len(labels) + 3) // 4  # Divide evenly across 4 columns
+for col_index in range(4):
+    with cols[col_index]:
+        for i in range(rows_per_col):
+            idx = i + col_index * rows_per_col
+            if idx < len(labels):
+                label = labels[idx]
+                val = st.number_input(f"{label}", min_value=0.0, value=0.0, step=0.1, key=label)
+                values.append(val)
 
 AVG_AREA=sum(values)/16
 MAX_LINE=(max(values)+AVG_AREA)/2
