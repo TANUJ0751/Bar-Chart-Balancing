@@ -109,7 +109,7 @@ def generate_pdf(
         pdf.cell(0, 10, "Original Input Bar Chart", ln=True)
         pdf.image(fig1_path, w=180)
         pdf.set_font("Arial", "B", 12)
-        pdf.cell(0, 10, f"Total Original Value: {total_original}", ln=True)
+        pdf.cell(0, 10, f"{total_original}", ln=True)
 
         # Balanced Chart Page
         pdf.add_page()
@@ -121,8 +121,8 @@ def generate_pdf(
         pdf.ln(10)
         pdf.set_font("Arial", "B", 12)
         pdf.cell(0, 10, "Summary Metrics:", ln=True)
-        pdf.set_font("Arial", "", 12)
-        pdf.cell(0, 10, f"Total Balanced Value: {total_balanced}", ln=True)
+        pdf.set_font("Arial", "B", 12)
+        pdf.cell(0, 10, f"{total_balanced}", ln=True)
 
         # Save PDF to a buffer
         pdf_path = os.path.join(tmpdir, f"{filename}-report.pdf")
