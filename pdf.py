@@ -41,6 +41,18 @@ def _safe_write_plotly_png(fig, path_png, fallback_labels=None, fallback_values=
     plt.savefig(path_png, dpi=150)
     plt.close()
 
+import subprocess
+
+def install_chrome():
+    try:
+        subprocess.run(["wget", "-q", "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"])
+        subprocess.run(["apt-get", "update"])
+        subprocess.run(["apt-get", "install", "-y", "./google-chrome-stable_current_amd64.deb"])
+    except Exception as e:
+        print("Chrome installation failed:", e)
+
+
+
 
 def generate_pdf(
     df,
@@ -54,6 +66,8 @@ def generate_pdf(
     bal_values=None,        # list of balanced numeric values (optional; used for fallback)
     labels=None             # list of labels (optional; fallback)
 ):
+    
+    install_chrome()
     # Default fallback data from df if not provided
     if labels is None and "Zone" in df.columns:
         labels = df["Zone"].tolist()
