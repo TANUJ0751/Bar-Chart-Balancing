@@ -4,4 +4,3 @@ pandas
 fpdf
 matplotlib
 imgkit
-kaleido==1.0.0
