@@ -7,8 +7,6 @@ import pandas as pd
 import os
 import subprocess
 
-import subprocess
-
 def install_chrome():
     try:
         subprocess.run([
