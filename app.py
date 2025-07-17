@@ -4,6 +4,21 @@ import plotly.graph_objects as go
 from balance import balance_values
 from pdf import generate_pdf
 import pandas as pd
+import os
+import subprocess
+
+def install_chrome_if_needed():
+    chrome_path = "/usr/bin/google-chrome"
+    if not os.path.exists(chrome_path):
+        subprocess.run([
+            "apt-get", "update"
+        ], check=True)
+        subprocess.run([
+            "apt-get", "install", "-y", "google-chrome-stable"
+        ], check=True)
+        print("✅ Google Chrome installed successfully!")
+
+install_chrome_if_needed()
 
 # Hardcoded credentials (in production, use hashed passwords + database)
 USER_CREDENTIALS = {

@@ -8,19 +8,14 @@ import os
 def generate_pdf(df, fig1, fig2, filename, total_original, total_balanced,function_detail):
     # Create a temp directory
     with tempfile.TemporaryDirectory() as tmpdir:
-        # Save Plotly charts as HTML
-        fig1_html = os.path.join(tmpdir, "original_chart.html")
-        fig2_html = os.path.join(tmpdir, "balanced_chart.html")
-        fig1.write_html(fig1_html)
-        fig2.write_html(fig2_html)
+        # Save charts as images
+        fig1_path = os.path.join(tmpdir, "original_chart.png")
+        fig2_path = os.path.join(tmpdir, "balanced_chart.png")
 
-        # Convert HTML charts to PNG using imgkit
-        fig1_img = os.path.join(tmpdir, "original_chart.png")
-        fig2_img = os.path.join(tmpdir, "balanced_chart.png")
-        imgkit.from_file(fig1_html, fig1_img)
-        imgkit.from_file(fig2_html, fig2_img)
+        fig1.write_image(fig1_path, format='png', engine='kaleido')
+        fig2.write_image(fig2_path, format='png', engine='kaleido')
 
-        # Convert dataframe to text
+        # Convert dataframe to text format
         df_text = df.to_string(index=False)
 
         # Create PDF
@@ -48,23 +43,25 @@ def generate_pdf(df, fig1, fig2, filename, total_original, total_balanced,functi
         pdf.add_page()
         pdf.set_font("Arial", "B", 12)
         pdf.cell(0, 10, "Original Input Bar Chart", ln=True)
-        pdf.image(fig1_img, w=180)
+        pdf.image(fig1_path, w=180)
         pdf.set_font("Arial", "B", 12)
         pdf.cell(0, 10, f"Total Original Value: {total_original}", ln=True)
 
         pdf.add_page()
+        pdf.ln(10)
         pdf.cell(0, 10, "Balanced Bar Chart", ln=True)
-        pdf.image(fig2_img, w=180)
+        pdf.image(fig2_path, w=180)
 
-        # Summary
+        # ➕ Add Variable Values Here
         pdf.ln(10)
         pdf.set_font("Arial", "B", 12)
         pdf.cell(0, 10, "Summary Metrics:", ln=True)
 
         pdf.set_font("Arial", "", 12)
+        
         pdf.cell(0, 10, f"Total Balanced Value: {total_balanced}", ln=True)
 
-        # Save PDF to buffer
+        # Save PDF to a buffer
         pdf_path = os.path.join(tmpdir, f"{filename}-report.pdf")
         pdf.output(pdf_path)
 
