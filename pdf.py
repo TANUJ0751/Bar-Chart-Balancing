@@ -107,7 +107,7 @@ def generate_pdf(
         pdf.add_page()
         pdf.set_font("Arial", "B", 12)
         pdf.cell(0, 10, "Original Input Bar Chart", ln=True)
-        fig1.write_image(fig1_path, format="png", engine="kaleido", scale=2)
+        fig1.write_image(fig1_path, format="png", scale=2)
         pdf.set_font("Arial", "B", 12)
         pdf.cell(0, 10, f"Total Original Value: {total_original}", ln=True)
 
@@ -115,7 +115,7 @@ def generate_pdf(
         pdf.add_page()
         pdf.ln(10)
         pdf.cell(0, 10, "Balanced Bar Chart", ln=True)
-        fig2.write_image(fig1_path, format="png", engine="kaleido", scale=2)
+        fig2.write_image(fig1_path, format="png", scale=2)
 
         # Summary
         pdf.ln(10)
