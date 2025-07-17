@@ -75,8 +75,8 @@ def generate_pdf(
         fig2_path = os.path.join(tmpdir, "balanced_chart.png")
 
         # Save plotly OR fallback chart images
-        _safe_write_plotly_png(fig1, fig1_path, fallback_labels=labels, fallback_values=orig_values)
-        _safe_write_plotly_png(fig2, fig2_path, fallback_labels=labels, fallback_values=bal_values)
+        # _safe_write_plotly_png(fig1, fig1_path, fallback_labels=labels, fallback_values=orig_values)
+        # _safe_write_plotly_png(fig2, fig2_path, fallback_labels=labels, fallback_values=bal_values)
 
         # Convert dataframe to text format
         df_text = df.to_string(index=False)
@@ -107,7 +107,7 @@ def generate_pdf(
         pdf.add_page()
         pdf.set_font("Arial", "B", 12)
         pdf.cell(0, 10, "Original Input Bar Chart", ln=True)
-        pdf.image(fig1_path, w=180)
+        fig1.write_image(fig1_path, format="png", engine="kaleido", scale=2)
         pdf.set_font("Arial", "B", 12)
         pdf.cell(0, 10, f"Total Original Value: {total_original}", ln=True)
 
@@ -115,7 +115,7 @@ def generate_pdf(
         pdf.add_page()
         pdf.ln(10)
         pdf.cell(0, 10, "Balanced Bar Chart", ln=True)
-        pdf.image(fig2_path, w=180)
+        fig2.write_image(fig1_path, format="png", engine="kaleido", scale=2)
 
         # Summary
         pdf.ln(10)
