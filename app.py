@@ -4,20 +4,6 @@ import plotly.graph_objects as go
 from balance import balance_values
 from pdf import generate_pdf
 import pandas as pd
-import os
-import subprocess
-
-def install_chrome():
-    try:
-        subprocess.run([
-            "wget", "-q", "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
-        ])
-        subprocess.run(["apt-get", "update"])
-        subprocess.run(["apt-get", "install", "-y", "./google-chrome-stable_current_amd64.deb"])
-    except Exception as e:
-        print("Chrome installation failed:", e)
-
-install_chrome()
 
 # Hardcoded credentials (in production, use hashed passwords + database)
 USER_CREDENTIALS = {
