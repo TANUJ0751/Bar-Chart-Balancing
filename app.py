@@ -7,18 +7,19 @@ import pandas as pd
 import os
 import subprocess
 
-# def install_chrome_if_needed():
-#     chrome_path = "/usr/bin/google-chrome"
-#     if not os.path.exists(chrome_path):
-#         subprocess.run([
-#             "apt-get", "update"
-#         ], check=True)
-#         subprocess.run([
-#             "apt-get", "install", "-y", "google-chrome-stable"
-#         ], check=True)
-#         print("✅ Google Chrome installed successfully!")
+import subprocess
 
-# install_chrome_if_needed()
+def install_chrome():
+    try:
+        subprocess.run([
+            "wget", "-q", "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+        ])
+        subprocess.run(["apt-get", "update"])
+        subprocess.run(["apt-get", "install", "-y", "./google-chrome-stable_current_amd64.deb"])
+    except Exception as e:
+        print("Chrome installation failed:", e)
+
+install_chrome()
 
 # Hardcoded credentials (in production, use hashed passwords + database)
 USER_CREDENTIALS = {
