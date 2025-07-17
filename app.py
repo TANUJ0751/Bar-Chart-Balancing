@@ -7,8 +7,8 @@ import pandas as pd
 
 # Hardcoded credentials (in production, use hashed passwords + database)
 USER_CREDENTIALS = {
-    "tanuj": "password123",
-    "admin": "adminpass"
+    "tanuj": "ZKd8iEyp7945K5u",
+    "admin": "ZKd8iEyp7945K5u"
 }
 
 if "authenticated" not in st.session_state:
