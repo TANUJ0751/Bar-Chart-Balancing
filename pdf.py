@@ -4,42 +4,42 @@ import tempfile
 import imgkit
 import os
 
-def _safe_write_plotly_png(fig, path_png, fallback_labels=None, fallback_values=None):
-    """
-    Try saving a Plotly fig to PNG using Kaleido (Chrome required).
-    If that fails, fall back to a basic Matplotlib bar chart using provided data.
-    """
-    try:
-        import kaleido
-        chrome_path = os.environ.get("KaleidoExecutablePath")
-        if not chrome_path:
-            try:
-                chrome_path = str(kaleido.get_chrome_sync())  # ✅ FIX: convert Path to str
-                os.environ["KaleidoExecutablePath"] = chrome_path
-            except Exception as e:
-                print("⚠️ Kaleido portable Chrome fetch failed:", e)
-        fig.write_image(path_png, format="png", engine="kaleido")
-        return
-    except Exception as e:
-        print("❌ Kaleido export failed:", e)
-        print("➡️ Falling back to Matplotlib static render...")
+# def _safe_write_plotly_png(fig, path_png, fallback_labels=None, fallback_values=None):
+#     """
+#     Try saving a Plotly fig to PNG using Kaleido (Chrome required).
+#     If that fails, fall back to a basic Matplotlib bar chart using provided data.
+#     """
+#     try:
+#         import kaleido
+#         chrome_path = os.environ.get("KaleidoExecutablePath")
+#         if not chrome_path:
+#             try:
+#                 chrome_path = str(kaleido.get_chrome_sync())  # ✅ FIX: convert Path to str
+#                 os.environ["KaleidoExecutablePath"] = chrome_path
+#             except Exception as e:
+#                 print("⚠️ Kaleido portable Chrome fetch failed:", e)
+#         fig.write_image(path_png, format="png", engine="kaleido")
+#         return
+#     except Exception as e:
+#         print("❌ Kaleido export failed:", e)
+#         print("➡️ Falling back to Matplotlib static render...")
 
-    # ---- Fallback ----
-    import matplotlib.pyplot as plt
-    if fallback_labels is None or fallback_values is None:
-        plt.figure(figsize=(6, 2))
-        plt.text(0.5, 0.5, "Chart unavailable", ha='center', va='center')
-        plt.axis('off')
-        plt.savefig(path_png, dpi=120, bbox_inches='tight')
-        plt.close()
-        return
+#     # ---- Fallback ----
+#     import matplotlib.pyplot as plt
+#     if fallback_labels is None or fallback_values is None:
+#         plt.figure(figsize=(6, 2))
+#         plt.text(0.5, 0.5, "Chart unavailable", ha='center', va='center')
+#         plt.axis('off')
+#         plt.savefig(path_png, dpi=120, bbox_inches='tight')
+#         plt.close()
+#         return
 
-    plt.figure(figsize=(10, 4))
-    plt.bar(fallback_labels, fallback_values)
-    plt.xticks(rotation=45, ha='right')
-    plt.tight_layout()
-    plt.savefig(path_png, dpi=150)
-    plt.close()
+#     plt.figure(figsize=(10, 4))
+#     plt.bar(fallback_labels, fallback_values)
+#     plt.xticks(rotation=45, ha='right')
+#     plt.tight_layout()
+#     plt.savefig(path_png, dpi=150)
+#     plt.close()
 
 
 def generate_pdf(
@@ -75,8 +75,8 @@ def generate_pdf(
         fig2_path = os.path.join(tmpdir, "balanced_chart.png")
 
         # Save plotly OR fallback chart images
-        _safe_write_plotly_png(fig1, fig1_path, fallback_labels=labels, fallback_values=orig_values)
-        _safe_write_plotly_png(fig2, fig2_path, fallback_labels=labels, fallback_values=bal_values)
+        # _safe_write_plotly_png(fig1, fig1_path, fallback_labels=labels, fallback_values=orig_values)
+        # _safe_write_plotly_png(fig2, fig2_path, fallback_labels=labels, fallback_values=bal_values)
 
         # Convert dataframe to text format
         df_text = df.to_string(index=False)
@@ -107,7 +107,7 @@ def generate_pdf(
         pdf.add_page()
         pdf.set_font("Arial", "B", 12)
         pdf.cell(0, 10, "Original Input Bar Chart", ln=True)
-        pdf.image(fig1_path, w=180)
+        fig1.write_image(fig1_path, format="png", engine="kaleido", scale=2)
         pdf.set_font("Arial", "B", 12)
         pdf.cell(0, 10, f"Total Original Value: {total_original}", ln=True)
 
@@ -115,7 +115,7 @@ def generate_pdf(
         pdf.add_page()
         pdf.ln(10)
         pdf.cell(0, 10, "Balanced Bar Chart", ln=True)
-        pdf.image(fig2_path, w=180)
+        fig2.write_image(fig1_path, format="png", engine="kaleido", scale=2)
 
         # Summary
         pdf.ln(10)
