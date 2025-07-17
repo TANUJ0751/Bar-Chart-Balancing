@@ -7,18 +7,18 @@ import pandas as pd
 import os
 import subprocess
 
-def install_chrome_if_needed():
-    chrome_path = "/usr/bin/google-chrome"
-    if not os.path.exists(chrome_path):
-        subprocess.run([
-            "apt-get", "update"
-        ], check=True)
-        subprocess.run([
-            "apt-get", "install", "-y", "google-chrome-stable"
-        ], check=True)
-        print("✅ Google Chrome installed successfully!")
+# def install_chrome_if_needed():
+#     chrome_path = "/usr/bin/google-chrome"
+#     if not os.path.exists(chrome_path):
+#         subprocess.run([
+#             "apt-get", "update"
+#         ], check=True)
+#         subprocess.run([
+#             "apt-get", "install", "-y", "google-chrome-stable"
+#         ], check=True)
+#         print("✅ Google Chrome installed successfully!")
 
-install_chrome_if_needed()
+# install_chrome_if_needed()
 
 # Hardcoded credentials (in production, use hashed passwords + database)
 USER_CREDENTIALS = {
@@ -57,11 +57,11 @@ if st.session_state.authenticated:
         st.rerun()  # Forces the app to reload and show login screen
 
 
-st.set_page_config(
-    page_title="Bar Chart Balancer",
-    page_icon="🧭",  # Emoji or path to image file
-    layout="wide"
-)
+# st.set_page_config(
+#     page_title="Bar Chart Balancer",
+#     page_icon="🧭",  # Emoji or path to image file
+#     layout="wide"
+# )
 
 st.title("Bar Graph Balancing")
 st.write("#### Specially for Acharya Pankit Sir")
@@ -185,9 +185,10 @@ st.markdown("### Original vs Balanced Values")
 st.dataframe(balanced_data,use_container_width=True)
 function_detail=f"Function Mode : {mode} , Step Size : {step}"
 if name and min(values)>0 :
-    pdf_data = generate_pdf(balanced_data, fig, fig2,name,total_original,total_balance,function_detail)
+    pdf_data = generate_pdf(balanced_data, fig, fig2,name,total_original,total_balance,function_detail,values,balanced_values,labels)
 
     st.download_button(
+        
         label="📄 Download PDF Report",
         data=pdf_data,
         file_name=f"{name}-report.pdf",
