@@ -170,7 +170,7 @@ st.markdown("### Original vs Balanced Values")
 st.dataframe(balanced_data,use_container_width=True)
 function_detail=f"Function Mode : {mode} , Step Size : {step}"
 if name and min(values)>0 :
-    pdf_data = generate_pdf(balanced_data, fig, fig2,name,total_original,total_balance,function_detail)
+    pdf_data = generate_pdf(balanced_data, fig, fig2,name,total_original,total_balance,function_detail,values,balanced_values,labels)
 
     st.download_button(
         
