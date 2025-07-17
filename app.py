@@ -35,6 +35,12 @@ if not st.session_state.authenticated:
     login()
     st.stop()
 
+# Show logout button in sidebar
+if st.session_state.authenticated:
+    if st.sidebar.button("🚪 Logout"):
+        st.session_state.authenticated = False
+        st.rerun()  # Forces the app to reload and show login screen
+
 
 st.set_page_config(
     page_title="Bar Chart Balancer",
