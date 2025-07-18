@@ -7,8 +7,8 @@ import pandas as pd
 
 # Hardcoded credentials (in production, use hashed passwords + database)
 USER_CREDENTIALS = {
-    "tanuj": "ZKd8iEyp7945K5u",
-    "admin": "ZKd8iEyp7945K5u",
+    "tanuj": "ZKd8iEysp7945K5u",
+    "admin": "ZKd8iEsyp7945K5u",
     "apg": "ZKd8isdfdEyp7945K5u"
 }
 
