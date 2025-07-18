@@ -92,7 +92,7 @@ data = pd.DataFrame({
 fig = go.Figure()
 
 # Add bar chart
-fig.add_trace(go.Bar(x=data['Label'], y=data['Value'],marker_color=colors, name='Input Values'))
+fig.add_trace(go.Bar(x=data['Label'], y=data['Value'],marker_color=colors, name='Input Values',textposition="outside"))
 
 # Add horizontal lines
 fig.add_hline(y=AVG_AREA, line_dash="dash", line_color="blue", annotation_text="Avg Area", annotation_position="top right")
@@ -140,7 +140,8 @@ fig2.add_trace(go.Bar(
     x=labels,
     y=balanced_values,
     marker_color=colors,
-    name='Balanced Area'
+    name='Balanced Area',
+    textposition="outside"
 ))
 
 fig2.add_hline(y=sum(balanced_values)/16, line_dash="dash", line_color="blue",
